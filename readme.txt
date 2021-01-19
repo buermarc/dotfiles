@@ -9,7 +9,8 @@ wlogout,
 daily
 
 pics: 
-Background
+Background (trex*.png)
+Desktop Preview (main.png, feature.png)
 
 .bin:
 Just some convenient (not good) little scripts
