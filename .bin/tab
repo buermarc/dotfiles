@@ -1,0 +1,14 @@
+if [[ $1 == 'fzf' ]];then
+    ID=$(swaymsg -t get_tree | rg name -n | fzf | awk '{print$1}')
+else
+    ID=$(swaymsg -t get_tree | rg name -n | bemenu -n -m 1 -l 10 -i | awk '{print$1}')
+fi
+ID=${ID//:}
+ID=$(expr $ID - 1)
+ID=$(swaymsg -t get_tree | sed "$ID!d")
+ID=${ID//id}
+ID=${ID//\"}
+ID=${ID//,}
+ID=${ID//:}
+#echo $ID | wc -n
+swaymsg [con_id=$ID] focus

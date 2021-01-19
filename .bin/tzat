@@ -1,0 +1,5 @@
+#!/bin/bash
+mkdir -p /tmp/forread
+pdftoppm -rx 300 -ry 300 -png $1 /tmp/forread/out
+fbi -a -w /tmp/forread/*.png
+rm /tmp/forread/out*.png

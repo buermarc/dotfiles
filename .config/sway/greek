@@ -1,0 +1,9 @@
+#!/bin/sh 
+
+bool=$(swaymsg -t get_inputs | rg us)
+
+if [ -z "$bool" ]; then
+    swaymsg input type:keyboard xkb_layout us
+else 
+    swaymsg input type:keyboard xkb_layout gr
+fi

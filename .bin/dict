@@ -1,0 +1,9 @@
+#!/bin/bash
+if [[ ! -z "$1" ]]; then
+    firefox "https://www.dict.cc/?s=$1"
+else
+    OPEN=$(echo "" | bemenu -n -m 1 -l 10 -i )
+    if [[ ! -z $OPEN ]]; then
+        firefox "https://www.dict.cc/?s=$OPEN"
+    fi
+fi

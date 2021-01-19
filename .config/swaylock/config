@@ -1,0 +1,14 @@
+# Random Pic
+#image=DP-2:~/pics/i5l293f08yq41.png
+#image=DVI-D-1:~/pics/secondcatbg.png
+
+# Kebs Pic
+#image=DP-2:~/pics/kebs.png
+#image=DVI-D-1:~/pics/secondkebs.png
+
+# Current Pic
+image=DP-2:~/pics/tearexgimp.png
+image=DVI-D-1:~/pics/tearexsecondgimp.png
+font=JetBrainsMono
+show-failed-attempts
+ignore-empty-password

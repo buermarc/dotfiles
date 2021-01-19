@@ -1,0 +1,3 @@
+#!/bin/zsh
+PDF=$(ls ~/projects/gesetze/pdfs/*.pdf | bemenu -n -m 1 -l 10 -i ) 
+zathura $PDF -f "§ $(echo "" | bemenu -n -m 1 -l 10 -i )"

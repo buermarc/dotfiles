@@ -1,0 +1,128 @@
+{
+    "layer": "top", // Waybar at top layer
+    // "position": "bottom", // Waybar position (top|bottom|left|right)
+    "height": 20, // Waybar height (to be removed for auto height)
+    // "width": 1280, // Waybar width
+    // Choose the order of the modules
+    "modules-left": ["sway/workspaces", "sway/mode", "custom/media"],
+    "modules-center": ["sway/window"],
+    "modules-right": ["idle_inhibitor", "network", "pulseaudio", "cpu", "memory", "temperature", "temperature#temp2", "clock", "tray"],
+    // Modules configuration
+     "sway/workspaces": {
+         "disable-scroll": true,
+         "all-outputs": true,
+         "format": "{name}: {icon}",
+         "format-icons": {
+             "1": "  main",
+             "2": "  sec",
+             "3": "",
+             /*"3": "  need some coffe",*/
+             /*"4": " ",
+             "5": "",*/
+             "0": "",
+             "urgent": "",
+             "focused": "",
+             /*"default": ""*/
+             "default": ""
+         }
+     },
+    "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": ""
+        }
+    },
+    "tray": {
+        "icon-size": 21,
+        "spacing": 10
+    },
+    "clock": {
+        "tooltip": "{:%Y-%m-%d}",
+        "format": "{:%Y-%m-%d  %H:%M:%S}",
+        "format-alt": "{:%Y-%m-%d}",
+        "interval": 1
+    },
+    "cpu": {
+        "format": "{usage}% ",
+        "tooltip": false,
+        "on-click": "st -e htop"
+    },
+    "memory": {
+        "format": "{}% ",
+        "on-click": "st -e htop"
+    },
+    "temperature": {
+        "thermal-zone": 2,
+        //"hwmon-path": "/sys/class/hwmon/hwmon4/temp1_input",
+        "critical-threshold": 80,
+        // "format-critical": "{temperatureC}°-CPUC {icon}",
+        "format": "{temperatureC}:糖 {icon}",
+        "format-icons": ["", "", ""],
+        "on-click": "st -e sens"
+    },
+    "temperature#temp2": {
+        //"thermal-zone": 4,
+        "hwmon-path": "/sys/class/hwmon/hwmon1/temp1_input",
+        "critical-threshold": 80,
+        // "format-critical": "{temperatureC}°C {icon}",
+        "format": "{temperatureC}: {icon}",
+        "format-icons": ["", "", ""],
+        "on-click": "st -e sens"
+    },
+    "backlight": {
+        // "device": "acpi_video1",
+        "format": "{percent}% {icon}",
+        "format-icons": ["", ""]
+    },
+    "battery": {
+        "states": {
+            // "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{capacity}% {icon}",
+        "format-charging": "{capacity}% ",
+        "format-plugged": "{capacity}% ",
+        "format-alt": "{time} {icon}",
+        // "format-good": "", // An empty format will hide the module
+        // "format-full": "",
+        "format-icons": ["", "", "", "", ""]
+    },
+    "battery#bat2": {
+        "bat": "BAT2"
+    },
+    "network": {
+        "interface": "en*", // (Optional) To force the use of this interface
+        "format-wifi": "{essid} ({signalStrength}%) ",
+        "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
+        "format-linked": "{ifname} (No IP) ",
+        "format-disconnected": "Disconnected ",
+        "format-alt": ":{bandwidthUpBits} :{bandwidthDownBits} {ifname}: {ipaddr}/{cidr} ",
+        "interval" : 10
+    },
+    "pulseaudio": {
+        // "scroll-step": 1, // %, can be a float
+        "format": "{volume}% ",
+        "format-bluetooth": "{volume}% {icon}  {format_source}",
+        "format-bluetooth-muted": " {icon}  {format_source}",
+        "format-muted": " {format_source}",
+        "format-source": "{volume}% ",
+        /*"format-source": "{volume}%   BAT",*/
+        /*"format-source": "{volume}% VOL",*/
+        "format-source-muted": "",
+        "format-icons": {
+            "headphones": "VOL",
+            "handsfree": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["a", "b", ""]
+        },
+        "on-click": "st -e pulsemixer"
+    }
+}

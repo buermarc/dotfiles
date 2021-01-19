@@ -1,0 +1,7 @@
+#/bin/bash
+FILE=$(find . -name "*.png" | fzf --multi --query="$1")
+printf "$FILE"
+if [[ -z $FILE ]];then
+    exit
+fi
+rx  $FILE &> /dev/null & 

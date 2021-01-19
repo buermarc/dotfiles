@@ -1,0 +1,14 @@
+#!/bin/bash
+if [ "$1" == "stop" ]; then
+    /opt/cisco/anyconnect/bin/vpn disconnect
+    sudo systemctl stop vpnagentd.service
+    echo "Stopped the VPN Service"
+    exit
+fi
+
+RUNNING=$(systemctl status vpnagentd.service | rg running)
+if [ -z "$RUNNING" ]; then
+    echo "Starting the VPN Service"
+    sudo systemctl start vpnagentd.service
+fi
+/opt/cisco/anyconnect/bin/vpn $@

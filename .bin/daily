@@ -1,0 +1,107 @@
+#!/bin/bash
+EDITOR=vim
+DAILY_PATH=~/.daily
+CURRENT_YEAR_WEEK=$(date +%Y-%V)
+CURRENT_DAY=$(date +%Y-%m-%d-%a)
+
+function stat_file() {
+    stat $1
+}
+
+function dismiss() {
+    ID=$(makoctl list | jq '.data | .[] | .[] | select(.summary.data=="daily") | .id.data')
+    echo $ID
+    if [[ ! -z $ID ]]; then
+        makoctl dismiss -n $ID
+    fi
+
+}
+
+function edit() {
+    if [[ ! -f "$1" ]]; then
+        create "$1"     
+    fi
+    dismiss
+    $EDITOR $1
+}
+
+function create() {
+    CURRENT_TIME=$(date +%H%M)
+    printf "===\n$CURRENT_DAY-$CURRENT_TIME\n---" >> $1
+}
+
+function delete() {
+    rm -i $1
+}
+
+function print_help() {
+    printf "Usage: daily [cmd] [day]\n[cmd] = create | edit | rm | stat\n"
+}
+
+function parse_args() {
+
+    if [[ ! -d "$DAILY_PATH" ]]; then
+        mkdir $DAILY_PATH
+    fi
+
+    CURRENT_YEAR_WEEK=$(date +%Y-%V)
+
+    cmd=$1
+
+    if [[ -z $2 ]] && [[ -z $1 ]]; then
+        CURRENT_YEAR_WEEK=$(date +%Y-%V)
+        CURRENT_DAY=$(date +%Y-%m-%d-%a)
+    elif [[ ! -z $2  ]]; then
+        CURRENT_DAY=$(date +%Y-%m-%d-%a --date="$2")
+        CURRENT_YEAR_WEEK=$(date +%Y-%V --date="$2")
+    fi
+
+    if [[ ! -d "$DAILY_PATH/$CURRENT_YEAR_WEEK" ]]; then
+        mkdir $DAILY_PATH/$CURRENT_YEAR_WEEK
+    fi
+
+    CURRENT_FILE=$DAILY_PATH/$CURRENT_YEAR_WEEK/$CURRENT_DAY.txt
+
+    if [[ $cmd == "create" ]];then
+        create $CURRENT_FILE
+        exit
+    fi
+
+    if [[ $cmd == "edit" ]];then
+        edit $CURRENT_FILE
+        exit
+    fi
+
+    if [[ $cmd == "rm" ]];then
+        delete $CURRENT_FILE
+        exit
+    fi
+
+    if [[ $cmd == "help" ]] || [[ $cmd == "--help" ]] || [[ $cmd == "-h" ]];
+    then
+        print_help
+        exit
+    fi
+
+    if [[ $cmd == "stat" ]]; then
+        stat_file $CURRENT_FILE
+        if [[ $? != 0 ]]; then
+            exit 1
+        fi
+        exit
+    fi
+
+    if [[ ! -z "$1" ]]; then
+        CURRENT_DAY=$(date +%Y-%m-%d-%a --date="$1")
+        CURRENT_YEAR_WEEK=$(date +%Y-%V --date="$1")
+        CURRENT_FILE=$DAILY_PATH/$CURRENT_YEAR_WEEK/$CURRENT_DAY.txt
+    fi
+
+    day=$1
+
+    edit $CURRENT_FILE
+
+}
+
+# main
+parse_args "$@"

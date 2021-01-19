@@ -1,0 +1,4 @@
+{
+    "java.trace.server":"verbose",
+    "java.jdt.ls.vmargs":"-Dlog.level=ALL"
+}

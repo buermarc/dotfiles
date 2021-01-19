@@ -1,0 +1,15 @@
+#!/bin/sh 
+
+bool=$(swaymsg -t get_inputs | rg Russian)
+
+if [ -z "$bool" ]; then
+    swaymsg input type:keyboard xkb_variant mac
+    swaymsg input type:keyboard xkb_layout ru
+    swaymsg input type:keyboard xkb_variant phonetic_dvorak
+#    setxkbmap ru -variant phonetic_dvorak
+else 
+    echo else
+    swaymsg input type:keyboard xkb_variant mac
+    swaymsg input type:keyboard xkb_layout us
+    swaymsg input type:keyboard xkb_variant dvorak
+fi

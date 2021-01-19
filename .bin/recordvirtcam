@@ -1,0 +1,13 @@
+#!/bin/bash
+if [[ ! -z "$1" ]]; then
+    DEV=/dev/video$1
+    echo $DEV
+    if [[ ! -c "$DEV" ]];then
+        echo "Device $DEV not found"
+        exit
+    fi
+    wf-recorder --muxer=v4l2 --codec=rawvideo --pixel-format=yuv420p --file=$DEV
+else
+    echo Usage: $0 VIDEO_DEVICE
+    echo VIDEO_DEVICE: Number of the Loopback Device
+fi

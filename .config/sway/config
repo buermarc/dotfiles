@@ -1,0 +1,325 @@
+exec wal -R
+exec mako
+exec export SHELL=/usr/bin/zsh
+default_orientation auto
+smart_borders on
+smart_gaps on
+popup_during_fullscreen smart
+workspace_auto_back_and_forth yes
+# Default config for sway
+#
+# Copy this to ~/.config/sway/config and edit it to your liking.
+#
+# Read `man 5 sway` for a complete reference.
+
+### Variables
+#
+# Logo key. Use Mod1 for Alt.
+set $mod Mod4
+set $ctrl Mod1
+
+# Home row direction keys, like vim
+set $left h
+set $down j
+set $up k
+set $right l
+
+# Your preferred terminal emulator
+set $term st
+set $term2 kitty
+set $browser firefox
+
+# Your preferred application launcher
+# Note: pass the final command to swaymsg so that the resulting window can be opened
+# on the original workspace that the command was run on.
+set $menu bemenu-run -n -m 1 -i
+
+### Mine ###
+#
+# Firefox
+set $MOZ_ENABLE_WAYLAND 1
+#default_border none
+
+bindsym XF86AudioRaiseVolume exec pulsemixer --change-volume +5
+
+bindsym XF86AudioLowerVolume exec pulsemixer --change-volume -5
+
+bindsym XF86AudioMute exec pulsemixer --toggle-mute 
+
+input * {
+    xkb_layout "us,apl,us"
+    xkb_variant "dvorak,,altgr-intl"
+    xkb_options "caps:escape,compose:ralt,grp:alt_space_toggle"
+}
+
+input 1133:49970:Logitech_Gaming_Mouse_G502 {
+    accel_profile flat
+    pointer_accel -0.65
+}
+
+input 1133:49970:Logitech_Gaming_Mouse_G502_Consumer_Control {
+    accel_profile flat
+    pointer_accel -0.65
+}
+
+### Output configuration
+#
+# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
+
+output DVI-D-1 bg /home/mulc/pics/tearexsecondgimp.png fill
+output DP-2 bg /home/mulc/pics/tearexgimp.png fill
+
+font pango:JetBrainsMono Nerd Font 10
+#
+# Example configuration:
+#
+#   output HDMI-A-1 resolution 1920x1080 position 1920,0
+#
+# You can get the names of your outputs by running: swaymsg -t get_outputs
+
+# Probably useless but sometimes strange
+output * adaptive_sync off
+
+output DP-2 mode 1920x1080@144Hz adaptive_sync off position 1080,280
+output DVI-D-1 transform 90 mode 1920x1080@144Hz position 0,0
+
+workspace 2 output DVI-D-1
+workspace 1 output DP-2
+
+bindsym $mod+F11 output DP-2 mode --custom 1024x768@144Hz adaptive_sync off
+bindsym $mod+F12 output DP-2 mode 1920x1080@144Hz adaptive_sync off position 1080,280
+bindsym $mod+F10 output DP-2 transform 270
+bindsym $mod+Shift+F10 output DP-2 transform 0
+bindsym $mod+F9 output DVI-D-1 transform 0
+
+### Idle configuration
+#
+# Example configuration:
+#
+exec swayidle -w \
+          timeout 300 'swaylock -f -c 000000' \
+          timeout 600 'swaymsg "output * dpms off"' \
+               resume 'swaymsg "output * dpms on"' \
+          before-sleep 'swaylock -f -c 000000'
+#
+# This will lock your screen after 300 seconds of inactivity, then turn off
+# your displays after another 300 seconds, and turn your screens back on when
+# resumed. It will also lock your screen before your computer goes to sleep.
+
+### Input configuration
+#
+# Example configuration:
+#
+#   input "2:14:SynPS/2_Synaptics_TouchPad" {
+#       dwt enabled
+#       tap enabled
+#       natural_scroll enabled
+#       middle_emulation enabled
+#   }
+#
+# You can get the names of your inputs by running: swaymsg -t get_inputs
+# Read `man 5 sway-input` for more information about this section.
+
+### Key bindings
+#
+# Basics:
+#
+    # Start a terminal
+    bindsym $mod+Return exec $term
+    bindsym $mod+$ctrl+Return exec $term2
+
+    # Kill focused window
+    bindsym $mod+Shift+q kill
+
+    # Start your launcher
+    bindsym $mod+d exec $menu
+    bindsym $mod+t exec tab
+    bindsym $mod+g exec law
+
+    # Start your browser
+    bindsym $mod+c exec $browser
+
+    # Drag floating windows by holding down $mod and left mouse button.
+    # Resize them with right mouse button + $mod.
+    # Despite the name, also works for non-floating windows.
+    # Change normal to inverse to use left mouse button for resizing and right
+    # mouse button for dragging.
+    floating_modifier $mod normal
+
+    # Reload the configuration file
+    bindsym $mod+Shift+c reload
+
+    # Exit sway (logs you out of your Wayland session)
+    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+    bindsym $mod+Escape exec wlogout
+#
+# Moving around:
+#
+    # Move your focus around
+    bindsym $mod+$left focus left
+    bindsym $mod+$down focus down
+    bindsym $mod+$up focus up
+    bindsym $mod+$right focus right
+    # Or use $mod+[up|down|left|right]
+    bindsym $mod+Left focus left
+    bindsym $mod+Down focus down
+    bindsym $mod+Up focus up
+    bindsym $mod+Right focus right
+
+    # Move the focused window with the same, but add Shift
+    bindsym $mod+Shift+$left move left
+    bindsym $mod+Shift+$down move down
+    bindsym $mod+Shift+$up move up
+    bindsym $mod+Shift+$right move right
+    # Ditto, with arrow keys
+    bindsym $mod+Shift+Left move left
+    bindsym $mod+Shift+Down move down
+    bindsym $mod+Shift+Up move up
+    bindsym $mod+Shift+Right move right
+#
+# Workspaces:
+#
+    # Switch to workspace
+    bindsym $mod+1 workspace 1
+    bindsym $mod+2 workspace 2
+    bindsym $mod+3 workspace 3
+    bindsym $mod+4 workspace 4
+    bindsym $mod+5 workspace 5
+    bindsym $mod+6 workspace 6
+    bindsym $mod+7 workspace 7
+    bindsym $mod+8 workspace 8
+    bindsym $mod+9 workspace 9
+    bindsym $mod+0 workspace 10
+    # Switch to workspace
+    bindsym $mod+$ctrl+1 workspace a1
+    bindsym $mod+$ctrl+2 workspace a2
+    bindsym $mod+$ctrl+3 workspace a3
+    bindsym $mod+$ctrl+4 workspace a4
+    bindsym $mod+$ctrl+5 workspace a5
+    bindsym $mod+$ctrl+6 workspace a6
+    bindsym $mod+$ctrl+7 workspace a7
+    bindsym $mod+$ctrl+8 workspace a8
+    bindsym $mod+$ctrl+9 workspace a9
+    bindsym $mod+$ctrl+0 workspace a0
+    # Move focused container to workspace
+    bindsym $mod+Shift+1 move container to workspace 1
+    bindsym $mod+Shift+2 move container to workspace 2
+    bindsym $mod+Shift+3 move container to workspace 3
+    bindsym $mod+Shift+4 move container to workspace 4
+    bindsym $mod+Shift+5 move container to workspace 5
+    bindsym $mod+Shift+6 move container to workspace 6
+    bindsym $mod+Shift+7 move container to workspace 7
+    bindsym $mod+Shift+8 move container to workspace 8
+    bindsym $mod+Shift+9 move container to workspace 9
+    bindsym $mod+Shift+0 move container to workspace 10
+
+    bindsym $mod+Shift+$ctrl+1 move container to workspace a1
+    bindsym $mod+Shift+$ctrl+2 move container to workspace a2
+    bindsym $mod+Shift+$ctrl+3 move container to workspace a3
+    bindsym $mod+Shift+$ctrl+4 move container to workspace a4
+    bindsym $mod+Shift+$ctrl+5 move container to workspace a5
+    bindsym $mod+Shift+$ctrl+6 move container to workspace a6
+    bindsym $mod+Shift+$ctrl+7 move container to workspace a7
+    bindsym $mod+Shift+$ctrl+8 move container to workspace a8
+    bindsym $mod+Shift+$ctrl+9 move container to workspace a9
+    bindsym $mod+Shift+$ctrl+0 move container to workspace a0
+    # Note: workspaces can have any name you want, not just numbers.
+    # We just use 1-10 as the default.
+
+    
+    bindsym $mod+bracketleft workspace prev
+    bindsym $mod+bracketright workspace next
+    bindsym $mod+Shift+bracketleft workspace prev_on_output
+    bindsym $mod+Shift+bracketright workspace next_on_output
+    bindsym $mod+$ctrl+h workspace prev
+    bindsym $mod+$ctrl+l workspace next
+    bindsym $mod+$ctrl+Shift+h workspace prev_on_output
+    bindsym $mod+$ctrl+Shift+l workspace next_on_output
+
+#
+# Layout stuff:
+#
+    # You can "split" the current object of your focus with
+    # $mod+b or $mod+v, for horizontal and vertical splits
+    # respectively.
+    bindsym $mod+b splith
+    bindsym $mod+v splitv
+
+    # Switch the current container between different layout styles
+    bindsym $mod+s layout stacking
+    bindsym $mod+w layout tabbed
+    bindsym $mod+e layout toggle split
+
+    # Make the current focus fullscreen
+    bindsym $mod+f fullscreen
+
+    # Toggle the current focus between tiling and floating mode
+    bindsym $mod+Shift+space floating toggle
+
+    # Swap focus between the tiling area and the floating area
+    bindsym $mod+space focus mode_toggle
+
+    # Move focus to the parent container
+    bindsym $mod+a focus parent
+#
+# Scratchpad:
+#
+    # Sway has a "scratchpad", which is a bag of holding for windows.
+    # You can send windows there and get them back later.
+
+    # Move the currently focused window to the scratchpad
+    bindsym $mod+Shift+minus move scratchpad
+
+    # Show the next scratchpad window or hide the focused scratchpad window.
+    # If there are multiple scratchpad windows, this command cycles through them.
+    bindsym $mod+minus scratchpad show
+#
+# Resizing containers:
+#
+mode "resize" {
+    # left will shrink the containers width
+    # right will grow the containers width
+    # up will shrink the containers height
+    # down will grow the containers height
+    bindsym $left resize shrink width 30px
+    bindsym $down resize grow height 30px
+    bindsym $up resize shrink height 30px
+    bindsym $right resize grow width 30px
+
+    # Ditto, with arrow keys
+    bindsym Left resize shrink width 30px
+    bindsym Down resize grow height 30px
+    bindsym Up resize shrink height 30px
+    bindsym Right resize grow width 30px
+
+    # Return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+#
+# Status Bar:
+#
+# Read `man 5 sway-bar` for more information about this section.
+bar { 
+    swaybar_command waybar
+}
+#bar {
+#    position top
+#
+#    # When the status_command prints a new line to stdout, swaybar updates.
+#    # The default just shows the current date and time.
+#    status_command while date +'%Y-%m-%d %l:%M:%S %p'; do sleep 1; done
+#
+#    colors {
+#        statusline #ffffff
+#        background #323232
+#        inactive_workspace #32323200 #32323200 #5c5c5c
+#    }
+#}f5daa3 
+client.focused           #F1E098 #F1E098 #F1E098 #F1E098   #F1E098
+client.focused_inactive  #5c6370 #3b3228 #ffffff #5c6370   #5c6370
+client.unfocused         #5c6370 #3b3228 #ffffff #5c6370   #5c6370
+
+include /etc/sway/config.d/*

@@ -1,0 +1,7 @@
+#!/bin/bash
+PDF=$( find . \( -name '*.pdf' -o -name '*.epub' \) | fzf --multi --query="$1")
+echo $PDF
+if [[ ! -f $PDF ]] || [[ -z $PDF ]] ;then
+    exit
+fi
+zathura "$PDF" > /dev/null &
