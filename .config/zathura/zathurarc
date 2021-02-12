@@ -1,0 +1,7 @@
+map [normal] <BackSpace> navigate previous
+map [fullscreen] <BackSpace> navigate previous
+set selection-clipboard clipboard
+set recolor   
+set recolor-lightcolor \#222222
+set recolor-keephue
+set default-bg \#222230
