@@ -6,6 +6,7 @@ sway,
 waybar,
 swaylock,
 wlogout,
+zathura,
 daily
 
 pics: 
