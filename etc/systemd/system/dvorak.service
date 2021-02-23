@@ -1,0 +1,8 @@
+[Unit]
+Description=Dvorak service
+
+[Service]
+ExecStart=/usr/bin/loadkeys dvorak /home/mulc/.config/loadkeys/.keystrings
+
+[Install]
+WantedBy=multi-user.target

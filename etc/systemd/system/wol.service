@@ -1,0 +1,8 @@
+[Unit]
+Description=Wol service
+
+[Service]
+ExecStart=/usr/bin/ethtool -s enp4s0 wol g
+
+[Install]
+WantedBy=multi-user.target
