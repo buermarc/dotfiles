@@ -1,5 +1,8 @@
 set nocompatible
+set mouse=a
 filetyp off
+set encoding=utf-8
+set fileencoding=utf-8
 set rtp+=~/.vim/bundle/Vundle.vim
 set rtp+=~/.fzf
 set number
@@ -26,7 +29,7 @@ set smartcase
 :  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 :augroup END
 
-" pasting without newlines 
+" pasting without newlines
 set listchars=tab:\ \ ,trail:-,extends:>,nbsp:\ ,precedes:<
 
 " when indenting with '>', use 4 spaces width
@@ -34,27 +37,53 @@ set shiftwidth=4
 
 " highlight over 80
 highlight OverLength ctermbg=109 ctermfg=white guibg=#592929
+" match OverLength /\%81v.\+/
+" set colorcolumn=81
+" set tw=80
 
 " On pressing tab, insert 4 spaces
 set expandtab
 set belloff=all
 
-" Check spelling for files: Ugly, but haven't figured out a better way yet
-au BufEnter *.tex set spell 
+
+" Check spelling and rules based on file ending
 au BufEnter *.ts set tabstop=2
-au BufEnter *.jad set filetype=java 
-au BufEnter *.txt set spell 
+au BufEnter *.jad set filetype=java
+au BufEnter *.txt set spell
+" au BufEnter *.txt match OverLength /\%61v.\+/ | set colorcolumn=61 | set tw=60
 au BufEnter *.txt set colorcolumn=61 | set tw=60
-au BufEnter *.md set spell 
-au BufEnter *.tex*  set colorcolumn=101 | set tw=100
-au BufEnter *.md*  set colorcolumn=201 | set tw=200
+" au BufEnter *.ltxt match OverLength /\%99999v.\+/
+au BufEnter *.md set spell | set colorcolumn=81 | set tw=80
+au BufEnter *.txt set colorcolumn=81 | set tw=80
+" au BufEnter *.tex* match OverLength /\%201v.\+/ | set colorcolumn=101 | set tw=100
+au BufEnter *.tex*  set colorcolumn=101 | set tw=0 | set filetype=tex | set spell
+" au BufEnter *.rs* match OverLength /\%101v.\+/ | set colorcolumn=101 | set tw=100
 au BufEnter *.rs*  set colorcolumn=101 | set tw=100
 au BufEnter *.ger.* set spelllang=de
-au BufEnter *.bib set nospell 
-au BufEnter *.md set filetype=plain 
+au BufEnter *.mu.* set spelllang=en,de
+au BufEnter *.bib set nospell
+au BufEnter *.md set filetype=plain
+" au BufEnter /home/mulc/dh-stuff/iot/aufgabe1/* set encoding=utf-8
+"au BufReadPost *.docx :%!pandoc -f docx -t markdown
+"au BufWritePost *.docx :!pandoc -f markdown -t docx % > tmp.docx
+"au BufReadPost /home/mulc/repos/the-hard-way/* :CocDisable
 
-" Colors 
+" Check Spelling and rules based on filetype 
+autocmd FileType gitcommit setlocal spell
+autocmd FileType text setlocal spell | setlocal spelllang=en,de
+" TODO create R vim binding to send current line to a tmux session running R
+" autocmd FileType r map <C-CR> 
+
+" Colors TODO comment them out
+"hi SpellBad ctermbg=5
+"hi SpellRare ctermbg=205
 hi ColorColumn ctermbg=109
+
+"
+" Vim Zoom to CTRL-W + U
+nnoremap <silent> <C-w>u :ZoomWin<CR>
+
+nnoremap <M-m> :call jobstart('if [[ -f ./Makefile ]];then; make; elif [[ -f ./build.ninja ]];then; ninja; fi;') <CR>
 
 " anyjump stuff =========
 " Normal mode: Jump to definition under cursore
@@ -90,6 +119,9 @@ imap <ALT+u> - {\"u}
 imap <ALT+o> - {\"o}
 
 call plug#begin('~/.vim/plugged')
+        " Snippets
+    "Plug 'SirVer/ultisnips'
+
         " Mail
     Plug 'felipec/notmuch-vim'
     Plug 'neovim/neovim-ruby'
@@ -99,15 +131,19 @@ call plug#begin('~/.vim/plugged')
     Plug 'scrooloose/nerdtree'
     Plug 'scrooloose/syntastic'
 	" Semantic language support
-    Plug 'rhysd/vim-grammarous' 
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'dpelle/vim-LanguageTool'
+    Plug 'rhysd/vim-grammarous'
+	Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 	" Syntactic language support
-    Plug 'cespare/vim-toml'
-    Plug 'stephpy/vim-yaml'
-    Plug 'rhysd/vim-clang-format'
+	Plug 'cespare/vim-toml'
+	Plug 'stephpy/vim-yaml'
+	"Plug 'rust-lang/rust.vim'
+	Plug 'rhysd/vim-clang-format'
     Plug 'plasticboy/vim-markdown'
+    Plug 'vim-scripts/ZoomWin'
 
+    " Plug 'justinmk/vim-dirvish'
     Plug 'easymotion/vim-easymotion'
     Plug 'majutsushi/tagbar'
     Plug 'mhinz/vim-grepper'
@@ -116,10 +152,18 @@ call plug#begin('~/.vim/plugged')
     Plug 'vim-utils/vim-man'
     Plug 'yggdroot/indentline'
     Plug 'pechorin/any-jump.vim'
+    Plug 'tpope/vim-surround'
+    " Plug 'davidhalter/jedi-vim'
+       " Plug 'shougo/neocomplete'
     Plug 'vim-latex/vim-latex'
-    
+    " Plug 'mfussenegger/nvim-jdtls'
+
     "GUI
     Plug 'itchyny/lightline.vim'
+    "Plug 'vim-airline/vim-airline'
+
+    " R Studio emulation
+    Plug 'jalvesaq/Nvim-R', {'branch': 'stable'}
 call plug#end()
 
 " Bunch of stuff from rust guy
@@ -159,6 +203,9 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
+" coc-yank
+nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
+
 
 
 " Use tab for trigger completion with characters ahead and navigate.
@@ -186,7 +233,7 @@ function! s:show_documentation()
   endif
 endfunction
 
-" My stuff, better logfile reading
+" My stuff
 au BufRead,BufNewFile *.out set filetype=rust
 au BufRead,BufNewFile *.err set filetype=rust
 set tabpagemax=100
@@ -194,6 +241,26 @@ set tabpagemax=100
 " nerdtree
 map <C-n> :NERDTreeToggle<CR>
 
+
+" syntastic recommended settings
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+"let g:loaded_syntastic_java_javac_checker = 1
+
+"Language Tool
+let g:languagetool_cmd = '/usr/bin/languagetool'
+" neocomplete
+" let g:neocomplete#enable_at_startup = 1
+
+let g:Tex_FoldedSections = 'comment, table'
+
+"nmap <F3> :SyntasticToggleMode<CR>
 
 " tagbar
 nmap <F8> :TagbarToggle<CR>
@@ -205,11 +272,26 @@ nmap <M-w> <Plug>(grammarous-move-to-info-window)
 nmap <M-f> <Plug>(grammarous-fixit)
 nmap <M-r> <Plug>(grammarous-remove-error)
 
+set cursorline
+":hi CursorLine   cterm=NONE ctermbg=black ctermfg=white guibg=black guifg=white
+":hi CursorColumn cterm=NONE ctermbg=darkblue ctermfg=white guibg=darkblue guifg=white
 :hi CocFloating ctermbg=black
 :hi CocErrorFormat ctermbg=black
+command! -nargs=0 Format :call CocAction('format')
 :nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
 " Go back to last line when opening file
 if has("autocmd")
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
     \| exe "normal! g'\"" | endif
 endif
+
+
+ " Let's save undo info!
+if !isdirectory($HOME."/.vim")
+    call mkdir($HOME."/.vim", "", 0770)
+endif
+if !isdirectory($HOME."/.vim/undo-dir")
+    call mkdir($HOME."/.vim/undo-dir", "", 0700)
+endif
+set undodir=~/.vim/undo-dir
+set undofile
