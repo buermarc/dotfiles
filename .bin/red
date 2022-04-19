@@ -1,2 +1,2 @@
 pkill -9 redshift
-exec redshift -l 51:9 "$@"
+exec gammastep "$@"
