@@ -1,6 +1,7 @@
 exec wal -R
 exec mako
 exec export SHELL=/usr/bin/zsh
+exec 'sleep 3 && copyq'
 default_orientation auto
 smart_borders on
 smart_gaps on
@@ -38,18 +39,22 @@ set $menu bemenu-run -n -m 1 -i
 #
 # Firefox
 set $MOZ_ENABLE_WAYLAND 1
-#default_border none
+
+titlebar_border_thickness 1
+titlebar_padding 1
 
 bindsym XF86AudioRaiseVolume exec pulsemixer --change-volume +5
 
 bindsym XF86AudioLowerVolume exec pulsemixer --change-volume -5
 
 bindsym XF86AudioMute exec pulsemixer --toggle-mute 
+bindsym $mod+n exec makoctl dismiss --all
+bindsym $mod+$ctrl+c exec copyq show
 
 input * {
     xkb_layout "us,apl,us"
     xkb_variant "dvorak,,altgr-intl"
-    xkb_options "caps:escape,compose:ralt,grp:alt_space_toggle"
+    xkb_options "caps:escape,compose:ralt,grp:shifts_toggle"
 }
 
 input 1133:49970:Logitech_Gaming_Mouse_G502 {
@@ -145,6 +150,9 @@ exec swayidle -w \
     bindsym $mod+d exec $menu
     bindsym $mod+t exec tab
     bindsym $mod+g exec law
+
+    bindsym $mod+$ctrl+plus opacity plus 0.1
+    bindsym $mod+$ctrl+minus opacity minus 0.1
 
     # Start your browser
     bindsym $mod+c exec $browser
@@ -331,5 +339,7 @@ bar {
 client.focused           #F1E098 #F1E098 #F1E098 #F1E098   #F1E098
 client.focused_inactive  #5c6370 #3b3228 #ffffff #5c6370   #5c6370
 client.unfocused         #5c6370 #3b3228 #ffffff #5c6370   #5c6370
+
+for_window [title=".*CopyQ$"] floating enable
 
 include /etc/sway/config.d/*
