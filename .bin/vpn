@@ -2,6 +2,7 @@
 if [ "$1" == "stop" ]; then
     /opt/cisco/anyconnect/bin/vpn disconnect
     sudo systemctl stop vpnagentd.service
+    sudo systemctl disable vpnagentd.service
     echo "Stopped the VPN Service"
     exit
 fi
