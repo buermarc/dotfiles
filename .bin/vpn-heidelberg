@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+vpn -s < <(printf "connect $VPN_HOSTNAME\n$UNI_ID\n$(pass $PASSWORD_PATH)\nyes\n")
