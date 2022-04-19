@@ -89,10 +89,11 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'neovim/nvim-lspconfig'
     Plug 'mhinz/vim-signify'
+    Plug 'jpalardy/vim-slime'
 
     Plug 'airblade/vim-rooter'
     Plug 'junegunn/fzf.vim'
-    Plug 'ms-jpq/chadtree', {'branch': 'legacy', 'do': 'python3 -m chadtree deps'}
+    Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
 
     Plug 'dpelle/vim-LanguageTool'
     Plug 'rhysd/vim-grammarous'
@@ -157,72 +158,72 @@ let g:rustfmt_emit_files = 1
 let g:rustfmt_fail_silently = 0
 ]])
 
--- COC:
--- ====
--- Use auocmd to force lightline update.
-
--- Use <c-space> to trigger completion.
-vim.cmd([[
-inoremap <silent><expr> <c-space> coc#refresh()
-]])
-
--- Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
--- position. Coc only does snippet and additional edit on confirm.
--- <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
-vim.cmd([[
-if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-else
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-endif
-]])
-
--- Use `[g` and `]g` to navigate diagnostics
-vim.cmd([[
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-]])
-
--- Use <TAB> for selections ranges.
-vim.cmd([[
-nmap <silent> <TAB> <Plug>(coc-range-select)
-xmap <silent> <TAB> <Plug>(coc-range-select)
-]])
-
--- GoTo code navigation.
-vim.cmd([[
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-]])
-
--- coc-yank
-vim.cmd([[
-nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
-]])
-
--- Use tab for trigger completion with characters ahead and navigate.
--- NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
--- other plugin before putting this into your config.
+-- -- COC:
+-- -- ====
+-- -- Use auocmd to force lightline update.
+-- 
+-- -- Use <c-space> to trigger completion.
 -- vim.cmd([[
--- inoremap <silent><expr> <TAB>
---       \ pumvisible() ? "\<C-n>" :
---       \ <SID>check_back_space() ? "\<TAB>" :
---       \ coc#refresh()
--- inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+-- inoremap <silent><expr> <c-space> coc#refresh()
 -- ]])
-
-vim.cmd([[
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-]])
-
-vim.cmd([[
-command! -nargs=0 Format :call CocAction('format')
-]])
+-- 
+-- -- Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+-- -- position. Coc only does snippet and additional edit on confirm.
+-- -- <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+-- vim.cmd([[
+-- if exists('*complete_info')
+--   inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+-- else
+--   inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+-- endif
+-- ]])
+-- 
+-- -- Use `[g` and `]g` to navigate diagnostics
+-- vim.cmd([[
+-- nmap <silent> [g <Plug>(coc-diagnostic-prev)
+-- nmap <silent> ]g <Plug>(coc-diagnostic-next)
+-- ]])
+-- 
+-- -- Use <TAB> for selections ranges.
+-- vim.cmd([[
+-- nmap <silent> <TAB> <Plug>(coc-range-select)
+-- xmap <silent> <TAB> <Plug>(coc-range-select)
+-- ]])
+-- 
+-- -- GoTo code navigation.
+-- vim.cmd([[
+-- nmap <silent> gd <Plug>(coc-definition)
+-- nmap <silent> gy <Plug>(coc-type-definition)
+-- nmap <silent> gi <Plug>(coc-implementation)
+-- nmap <silent> gr <Plug>(coc-references)
+-- ]])
+-- 
+-- -- coc-yank
+-- vim.cmd([[
+-- nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
+-- ]])
+-- 
+-- -- Use tab for trigger completion with characters ahead and navigate.
+-- -- NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+-- -- other plugin before putting this into your config.
+-- -- vim.cmd([[
+-- -- inoremap <silent><expr> <TAB>
+-- --       \ pumvisible() ? "\<C-n>" :
+-- --       \ <SID>check_back_space() ? "\<TAB>" :
+-- --       \ coc#refresh()
+-- -- inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+-- -- ]])
+-- 
+-- vim.cmd([[
+-- function! s:check_back_space() abort
+--   let col = col('.') - 1
+--   return !col || getline('.')[col - 1]  =~# '\s'
+-- endfunction
+-- ]])
+-- 
+-- vim.cmd([[
+-- command! -nargs=0 Format :call CocAction('format')
+-- ]])
 
 -- MAN Pages:
 -- ==========
@@ -335,6 +336,10 @@ set undodir=~/.vim/undo-dir
 set undofile
 ]])
 
+vim.g.slime_target = "tmux"
+vim.g.slime_paste_file = "/tmp/.slime_paste"
+vim.g.slime_default_config = {socket_name="default", target_pane="slime:1.1"}
+
 local opts = { noremap=true, silent=true }
 vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
 vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
@@ -375,7 +380,7 @@ au BufWrite <buffer> lua require('lint').try_lint()
 
 vim.g.python3_host_prog="~/.pyenv/shims/python3.9"
 vim.g.coq_settings = { auto_start= 'shut-up' }
-local servers = { 'pyright' }
+local servers = { 'pyright', 'texlab', 'rust_analyzer', }
 local coq = require("coq")
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
