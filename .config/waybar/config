@@ -6,7 +6,7 @@
     // Choose the order of the modules
     "modules-left": ["sway/workspaces", "sway/mode", "custom/media"],
     "modules-center": ["sway/window"],
-    "modules-right": ["idle_inhibitor", "network", "pulseaudio", "cpu", "memory", "temperature", "temperature#temp2", "clock", "tray"],
+    "modules-right": ["custom/mouse", "idle_inhibitor", "network", "pulseaudio", "cpu", "memory", "temperature", "temperature#temp2", "clock", "tray"],
     // Modules configuration
      "sway/workspaces": {
          "disable-scroll": true,
@@ -28,6 +28,11 @@
      },
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
+    },
+    "custom/mouse": {
+        "format": "{}",
+        "exec": "$HOME/.bin/rivalbattery.py",
+        "interval": 30,
     },
     "idle_inhibitor": {
         "format": "{icon}",
@@ -123,6 +128,7 @@
             "car": "",
             "default": ["a", "b", ""]
         },
-        "on-click": "st -e pulsemixer"
+        "on-click": "st -e pulsemixer",
+        "on-right-click": "st -e pulsemixer"
     }
 }

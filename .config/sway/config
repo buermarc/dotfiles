@@ -57,6 +57,16 @@ input 1133:49970:Logitech_Gaming_Mouse_G502 {
     pointer_accel -0.65
 }
 
+input 4152:6200:SteelSeries_SteelSeries_Aerox_3_Wireless {
+    accel_profile flat
+    pointer_accel -0.65
+}
+
+input 4152:6202:SteelSeries_SteelSeries_Aerox_3_Wireless {
+    accel_profile flat
+    pointer_accel -0.65
+}
+
 input 1133:49970:Logitech_Gaming_Mouse_G502_Consumer_Control {
     accel_profile flat
     pointer_accel -0.65

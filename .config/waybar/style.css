@@ -86,6 +86,7 @@ window#waybar.chromium {
 #temperature,
 #backlight,
 #network,
+#custom-mouse,
 #pulseaudio,
 #custom-media,
 #tray,
@@ -149,6 +150,12 @@ label:focus {
 }
 
 #backlight {
+    background-color: #8ca059;
+    color: #363636;
+    border-bottom: 3px solid #19111e;
+}
+
+#custom-mouse {
     background-color: #8ca059;
     color: #363636;
     border-bottom: 3px solid #19111e;
