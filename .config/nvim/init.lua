@@ -78,7 +78,7 @@ autocmd FileType text setlocal spell | setlocal spelllang=en,de
 vim.api.nvim_set_keymap(
   "n",
   "<M-m>",
-  ":call jobstart('if [[ -f ./Makefile ]];then; make; elif [[ -f ./build.ninja ]];then; ninja; fi;') <CR>",
+  ":silent call jobstart('if [[ -f ./Makefile ]];then; make; elif [[ -f ./build.ninja ]];then; ninja; fi;') <CR>",
   { noremap = true }
  )
 
@@ -90,6 +90,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'neovim/nvim-lspconfig'
     Plug 'mhinz/vim-signify'
     Plug 'jpalardy/vim-slime'
+    Plug 'sainnhe/sonokai'
 
     Plug 'airblade/vim-rooter'
     Plug 'junegunn/fzf.vim'
@@ -113,6 +114,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'pechorin/any-jump.vim'
 
     Plug 'vim-latex/vim-latex'
+
+    Plug 'evanleck/vim-svelte'
 
     "GUI
     Plug 'itchyny/lightline.vim'
@@ -279,6 +282,7 @@ nmap <F8> :TagbarToggle<CR>
 vim.cmd([[
 hi ColorColumn ctermbg=109
 hi Pmenu guibg=#1b1b1b ctermbg=gray
+colorscheme sonokai
 ]])
 
 -- Cursor:
@@ -319,6 +323,7 @@ function! LightlineFilename()
   endif
   return expand('%')
 endfunction
+let g:lightline.colorscheme = 'sonokai'
 ]])
 
 
@@ -341,7 +346,7 @@ vim.g.slime_paste_file = "/tmp/.slime_paste"
 vim.g.slime_default_config = {socket_name="default", target_pane="slime:1.1"}
 
 local opts = { noremap=true, silent=true }
-vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<M-e>', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
 vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
 vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
 vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
@@ -378,7 +383,7 @@ vim.cmd([[
 au BufWrite <buffer> lua require('lint').try_lint()
 ]])
 
-vim.g.python3_host_prog="~/.pyenv/shims/python3.9"
+vim.g.python3_host_prog="/home/d074052/.pyenv/shims/python3"
 vim.g.coq_settings = { auto_start= 'shut-up' }
 local servers = { 'pyright', 'texlab', 'rust_analyzer', }
 local coq = require("coq")
@@ -391,3 +396,24 @@ for _, lsp in pairs(servers) do
     }
   }
 end
+
+vim.api.nvim_set_keymap(
+  "n",
+  "<M-g>",
+  ":Git blame <CR>",
+  { noremap = true }
+ )
+
+vim.api.nvim_set_keymap(
+  "n",
+  "<M-t>",
+  ":Files <CR>",
+  { noremap = true }
+ )
+
+vim.api.nvim_set_keymap(
+  "n",
+  "<M-b>",
+  ":Bu <CR>",
+  { noremap = true }
+ )
