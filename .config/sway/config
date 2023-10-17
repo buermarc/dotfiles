@@ -1,4 +1,5 @@
-exec wal -R
+exec export PATH=$HOME/.bin:$PATH
+exec_always foot --server
 exec mako
 exec export SHELL=/usr/bin/zsh
 exec 'sleep 3 && copyq'
@@ -26,14 +27,16 @@ set $up k
 set $right l
 
 # Your preferred terminal emulator
-set $term st
-set $term2 kitty
+set $term footclient
+set $term2 kitty zsh
 set $browser firefox
 
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu bemenu-run -n -m 1 -i
+set $menu wofi --show run -i
+set $menu2 wofi --show drun -i
+#set $menu bemenu-run -n -m 1 -i
 
 ### Mine ###
 #
@@ -51,11 +54,20 @@ bindsym XF86AudioMute exec pulsemixer --toggle-mute
 bindsym $mod+n exec makoctl dismiss --all
 bindsym $mod+$ctrl+c exec copyq show
 
+bindsym XF86MonBrightnessUp exec brightnessctl s +5%
+bindsym XF86MonBrightnessDown exec brightnessctl s 5%-
+
 input * {
-    xkb_layout "us,apl,us"
-    xkb_variant "dvorak,,altgr-intl"
+    xkb_layout "us,apl,de"
+    xkb_variant "dvorak,,"
     xkb_options "caps:escape,compose:ralt,grp:shifts_toggle"
 }
+
+input type:touchpad {
+    tap enabled
+    natural_scroll enabled
+}
+
 
 input 1133:49970:Logitech_Gaming_Mouse_G502 {
     accel_profile flat
@@ -81,8 +93,25 @@ input 1133:49970:Logitech_Gaming_Mouse_G502_Consumer_Control {
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 
-output DVI-D-1 bg /home/mulc/pics/tearexsecondgimp.png fill
-output DP-2 bg /home/mulc/pics/tearexgimp.png fill
+#output DVI-D-1 bg /home/mulc/pics/tearexsecondgimp.png fill
+#output DP-2 bg /home/mulc/pics/tearexgimp.png fill
+
+#output DP-6 pos 0,0
+#output DP-7 pos 1920,0
+output eDP1 pos 0 0
+output HDMI-A-1 pos 1920 0 mode 1920x1080@144Hz
+output DP-3 pos 1920 0 mode 1920x1080@144Hz
+
+# output "Eizo Nanao Corporation EV2750 0x000097B5" pos 2560 1081 mode 2560x1440 transform 90
+# output "Eizo Nanao Corporation EV2750 0x0000F75D" pos 0 1081 mode 2560x1440
+output "Eizo Nanao Corporation EV2750 0x0000F75D" pos 1920 0 mode 2560x1440
+output "Eizo Nanao Corporation EV2750 0x000097B5" pos 4480 0 mode 2560x1440 transform 90
+output eDP1 pos 0 0
+
+workspace 1 output DP-6
+workspace 2 output DP-7
+workspace 10 output eDP1
+workspace 1 output HDMI-A-1
 
 font pango:JetBrainsMono Nerd Font 10
 #
@@ -93,13 +122,13 @@ font pango:JetBrainsMono Nerd Font 10
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
 # Probably useless but sometimes strange
-output * adaptive_sync off
+#output * adaptive_sync off
 
-output DP-2 mode 1920x1080@144Hz adaptive_sync off position 1080,280
-output DVI-D-1 transform 90 mode 1920x1080@144Hz position 0,0
+#output DP-2 mode 1920x1080@144Hz adaptive_sync off position 1080,280
+#output DVI-D-1 transform 90 mode 1920x1080@144Hz position 0,0
 
-workspace 2 output DVI-D-1
-workspace 1 output DP-2
+#workspace 2 output DVI-D-1
+#workspace 1 output DP-2
 
 bindsym $mod+F11 output DP-2 mode --custom 1024x768@144Hz adaptive_sync off
 bindsym $mod+F12 output DP-2 mode 1920x1080@144Hz adaptive_sync off position 1080,280
@@ -113,8 +142,6 @@ bindsym $mod+F9 output DVI-D-1 transform 0
 #
 exec swayidle -w \
           timeout 300 'swaylock -f -c 000000' \
-          timeout 600 'swaymsg "output * dpms off"' \
-               resume 'swaymsg "output * dpms on"' \
           before-sleep 'swaylock -f -c 000000'
 #
 # This will lock your screen after 300 seconds of inactivity, then turn off
@@ -147,12 +174,15 @@ exec swayidle -w \
     bindsym $mod+Shift+q kill
 
     # Start your launcher
-    bindsym $mod+d exec $menu
-    bindsym $mod+t exec tab
+    bindsym $mod+d exec $menu2
+    bindsym $mod+$ctrl+d exec $menu
+    # bindsym $mod+t exec "/home/d074052/.cargo/bin/swaytab --filter-command wofi -a=--dmenu -a=-i"
+    bindsym $mod+t exec "/home/d074052/.cargo/bin/swaytab --filter-command dmenu -a=-b -a=-l -a=10"
     bindsym $mod+g exec law
 
     bindsym $mod+$ctrl+plus opacity plus 0.1
     bindsym $mod+$ctrl+minus opacity minus 0.1
+    bindsym $mod+$ctrl+s sticky toggle
 
     # Start your browser
     bindsym $mod+c exec $browser
@@ -341,5 +371,6 @@ client.focused_inactive  #5c6370 #3b3228 #ffffff #5c6370   #5c6370
 client.unfocused         #5c6370 #3b3228 #ffffff #5c6370   #5c6370
 
 for_window [title=".*CopyQ$"] floating enable
+for_window [title=".*f5epi$"] floating enable
 
 include /etc/sway/config.d/*
