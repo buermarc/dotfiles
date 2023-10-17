@@ -7,8 +7,8 @@
 #image=DVI-D-1:~/pics/secondkebs.png
 
 # Current Pic
-image=DP-2:~/pics/tearexgimp.png
-image=DVI-D-1:~/pics/tearexsecondgimp.png
+#color=12121200
+color=121212ff
 font=JetBrainsMono
 show-failed-attempts
 ignore-empty-password

@@ -1,13 +1,13 @@
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH:/home/mulc/downloads/renew/renew2.5.1/bin/unix
 
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/mulc/.oh-my-zsh"
+export ZSH="/home/d074052/.oh-my-zsh"
 export JAVA_HOME="/usr/lib/jvm/default/"
 export JDK_HOME="/usr/lib/jvm/default-runtime"
 export MOZ_ENABLE_WAYLAND=1
 export GTK_THEME=Adwaita:dark
+export TERM=xterm-256color
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -110,16 +110,37 @@ export KEYTIMEOUT=1
 
 
 # Own Env
-alias l='ls -la --color=auto'
+alias dim='date --iso-8601=minutes --date'
 alias c='fg'
 alias fu='pkill -9'
 alias prg='ps aux | rg'
 alias f='"$(fzf)"'
 alias tm='tmux'
-export PATH=$HOME/bin:$HOME/.cargo/bin:$HOME/.local/bin/:$PATH:/var/lib/PostgreSQL/10/bin:/opt/android-sdk/tools/bin:/home/mulc/downloads/renew/renew2.5.1/bin/unix
+alias ct='exa --tree'
+alias ls='exa --git'
+alias ll='ls -l'
+alias l='ll -a'
+alias vim='nvim'
+alias d='dirs -v'
+alias gss='git show --name-only'
+alias ga='git add'
+alias gap='git add -p'
+alias gs='git status'
+alias gc='git commit'
+alias gca='git commit --amend'
+alias gco='git checkout'
+alias gr='git rebase'
+alias gl='git log'
+alias gd='git diff'
+alias gst='git stash'
+
+alias aud='pulsemixer'
+alias blue='bluetoothctl'
+
+export PATH=$HOME/.bin:$HOME/.cargo/bin:$HOME/.local/bin/:$HOME/.pyenv/bin/::$HOME/.pyenv/shims/:$PATH
 
 export GOPATH=$HOME/repos/gopath
-export EDITOR=/home/mulc/bin/v
+export EDITOR=nvim
 
 
 # fzf
@@ -206,6 +227,14 @@ doi2bib() {
     echo > bib.bib
 }
 
-source /home/mulc/.config/broot/launcher/bash/br
-source /usr/share/fzf/completion.zsh
-source /usr/share/fzf/key-bindings.zsh
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+di() {
+	~/.bin/di "$@" | less
+}
+
+loadnvm() {
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+}
