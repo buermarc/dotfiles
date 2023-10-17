@@ -87,13 +87,15 @@ vim.api.nvim_set_keymap(
 vim.cmd([[
 call plug#begin('~/.vim/plugged')
 
+    Plug 'sainnhe/sonokai'
+
     Plug 'neovim/nvim-lspconfig'
     Plug 'mhinz/vim-signify'
     Plug 'jpalardy/vim-slime'
+    Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': '/home/d074052/.pyenv/shims/python -m chadtree deps'}
 
     Plug 'airblade/vim-rooter'
     Plug 'junegunn/fzf.vim'
-    Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
 
     Plug 'dpelle/vim-LanguageTool'
     Plug 'rhysd/vim-grammarous'
@@ -279,6 +281,7 @@ nmap <F8> :TagbarToggle<CR>
 vim.cmd([[
 hi ColorColumn ctermbg=109
 hi Pmenu guibg=#1b1b1b ctermbg=gray
+colorscheme sonokai
 ]])
 
 -- Cursor:
@@ -319,6 +322,7 @@ function! LightlineFilename()
   endif
   return expand('%')
 endfunction
+let g:lightline.colorscheme = 'sonokai'
 ]])
 
 
@@ -370,17 +374,18 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
-local lint = require('lint')
-lint.linters_by_ft = {
-  python = {'flake8', },
-}
-vim.cmd([[
-au BufWrite <buffer> lua require('lint').try_lint()
-]])
+-- local lint = require('lint')
+-- lint.linters_by_ft = {
+--   python = {'flake8', },
+-- }
+-- vim.cmd([[
+-- au BufWrite <buffer> lua require('lint').try_lint()
+-- ]])
 
-vim.g.python3_host_prog="~/.pyenv/shims/python3.9"
+vim.g.python3_host_prog="/home/d074052/.pyenv/shims/python3"
 vim.g.coq_settings = { auto_start= 'shut-up' }
-local servers = { 'pyright', 'texlab', 'rust_analyzer', }
+-- local servers = { 'pyright', 'texlab', 'rust_analyzer', }
+local servers = { 'pyright', 'rust_analyzer', 'clangd', }
 local coq = require("coq")
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
@@ -391,3 +396,24 @@ for _, lsp in pairs(servers) do
     }
   }
 end
+
+vim.api.nvim_set_keymap(
+  "n",
+  "<M-g>",
+  ":Git blame <CR>",
+  { noremap = true }
+ )
+
+vim.api.nvim_set_keymap(
+  "n",
+  "<M-t>",
+  ":Files <CR>",
+  { noremap = true }
+ )
+
+vim.api.nvim_set_keymap(
+  "n",
+  "<M-b>",
+  ":Bu <CR>",
+  { noremap = true }
+ )
