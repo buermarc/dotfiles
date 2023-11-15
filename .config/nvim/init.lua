@@ -66,7 +66,6 @@ au BufEnter *.rs*  set colorcolumn=101 | set tw=100
 au BufEnter *.ger.* set spelllang=de
 au BufEnter *.mu.* set spelllang=en,de
 au BufEnter *.bib set nospell
-au BufEnter *.md set filetype=plain
 ]])
 
 -- Check Spelling and rules based on filetype
@@ -88,8 +87,11 @@ vim.cmd([[
 call plug#begin('~/.vim/plugged')
 
     Plug 'neovim/nvim-lspconfig'
+    Plug 'elixir-editors/vim-elixir'
     Plug 'mhinz/vim-signify'
     Plug 'jpalardy/vim-slime'
+
+    Plug 'sainnhe/sonokai'
 
     Plug 'airblade/vim-rooter'
     Plug 'junegunn/fzf.vim'
@@ -112,7 +114,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'yggdroot/indentline'
     Plug 'pechorin/any-jump.vim'
 
-    Plug 'vim-latex/vim-latex'
+    Plug 'lervag/vimtex'
 
     "GUI
     Plug 'itchyny/lightline.vim'
@@ -248,6 +250,16 @@ vim.cmd([[
 nnoremap <leader>e <cmd>CHADopen<cr>
 ]])
 
+
+-- VIMTEX:
+-- =======
+vim.cmd([[
+syntax enable
+
+let g:vimtex_view_method = 'zathura'
+]])
+
+
 -- SPELLING:
 -- =========
 -- Language Tool
@@ -280,6 +292,9 @@ vim.cmd([[
 hi ColorColumn ctermbg=109
 hi Pmenu guibg=#1b1b1b ctermbg=gray
 ]])
+
+vim.o.background = "dark" -- or "light" for light mode
+vim.cmd([[colorscheme sonokai]])
 
 -- Cursor:
 -- -------
@@ -391,3 +406,24 @@ for _, lsp in pairs(servers) do
     }
   }
 end
+vim.api.nvim_set_keymap(
+  "n",
+  "<M-g>",
+  ":Git blame <CR>",
+  { noremap = true }
+ )
+
+vim.api.nvim_set_keymap(
+  "n",
+  "<M-t>",
+  ":Files <CR>",
+  { noremap = true }
+ )
+
+vim.api.nvim_set_keymap(
+  "n",
+  "<M-b>",
+  ":Bu <CR>",
+  { noremap = true }
+ )
+ vim.keymap.set('n', '<M-e>', vim.diagnostic.open_float, opts)
