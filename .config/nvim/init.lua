@@ -399,10 +399,12 @@ end
 -- au BufWrite <buffer> lua require('lint').try_lint()
 -- ]])
 
-vim.g.python3_host_prog="/home/d074052/.pyenv/shims/python3"
+vim.g.python3_host_prog="~/.pyenv/shims/python"
 vim.g.coq_settings = { auto_start= 'shut-up' }
--- local servers = { 'pyright', 'texlab', 'rust_analyzer', }
-local servers = { 'pyright', 'rust_analyzer', 'clangd', }
+require'lspconfig'.elixirls.setup{
+    cmd = { "/usr/lib/elixir-ls/language_server.sh" };
+}
+local servers = { 'pyright', 'texlab', 'rust_analyzer', 'clangd', 'tsserver' }
 local coq = require("coq")
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {

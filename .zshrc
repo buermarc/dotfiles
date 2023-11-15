@@ -117,6 +117,15 @@ alias prg='ps aux | rg'
 alias f='"$(fzf)"'
 alias tm='tmux'
 export PATH=$HOME/bin:$HOME/.cargo/bin:$HOME/.local/bin/:$PATH:/var/lib/PostgreSQL/10/bin:/opt/android-sdk/tools/bin:/home/mulc/downloads/renew/renew2.5.1/bin/unix
+alias gs='git status'
+alias ga='git add'
+alias gap='git add -p'
+alias gc='git commit'
+alias gca='git commit --amend'
+alias gco='git checkout'
+alias gr='git rebase'
+alias gl='git log'
+alias gd='git diff'
 
 export GOPATH=$HOME/repos/gopath
 export EDITOR=/home/mulc/bin/v
