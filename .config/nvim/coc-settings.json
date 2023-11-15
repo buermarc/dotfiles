@@ -1,4 +1,9 @@
 {
     "java.trace.server":"verbose",
-    "java.jdt.ls.vmargs":"-Dlog.level=ALL"
+    "java.jdt.ls.vmargs":"-Dlog.level=ALL",
+    "python.jediEnabled": true,
+    "python.pythonPath": "/usr/bin/python3",
+    "pylsp.builtin.enableInstallPylspMypy": true,
+    "pylsp.builtin.enableInstallPylsIsort": true,
+    "pylsp.builtin.enableInstallPythonLspBlack": true
 }

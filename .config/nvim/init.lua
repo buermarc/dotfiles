@@ -77,7 +77,7 @@ autocmd FileType text setlocal spell | setlocal spelllang=en,de
 vim.api.nvim_set_keymap(
   "n",
   "<M-m>",
-  ":call jobstart('if [[ -f ./Makefile ]];then; make; elif [[ -f ./build.ninja ]];then; ninja; fi;') <CR>",
+  ":silent call jobstart('if [[ -f ./Makefile ]];then; make; elif [[ -f ./build.ninja ]];then; ninja; fi;') <CR>",
   { noremap = true }
  )
 
@@ -86,16 +86,18 @@ vim.api.nvim_set_keymap(
 vim.cmd([[
 call plug#begin('~/.vim/plugged')
 
+    Plug 'sainnhe/sonokai'
+
     Plug 'neovim/nvim-lspconfig'
     Plug 'elixir-editors/vim-elixir'
     Plug 'mhinz/vim-signify'
     Plug 'jpalardy/vim-slime'
+    Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': '/home/d074052/.pyenv/shims/python -m chadtree deps'}
 
     Plug 'sainnhe/sonokai'
 
     Plug 'airblade/vim-rooter'
     Plug 'junegunn/fzf.vim'
-    Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
 
     Plug 'dpelle/vim-LanguageTool'
     Plug 'rhysd/vim-grammarous'
@@ -115,6 +117,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'pechorin/any-jump.vim'
 
     Plug 'lervag/vimtex'
+
+    Plug 'evanleck/vim-svelte'
 
     "GUI
     Plug 'itchyny/lightline.vim'
@@ -291,6 +295,7 @@ nmap <F8> :TagbarToggle<CR>
 vim.cmd([[
 hi ColorColumn ctermbg=109
 hi Pmenu guibg=#1b1b1b ctermbg=gray
+colorscheme sonokai
 ]])
 
 vim.o.background = "dark" -- or "light" for light mode
@@ -334,6 +339,7 @@ function! LightlineFilename()
   endif
   return expand('%')
 endfunction
+let g:lightline.colorscheme = 'sonokai'
 ]])
 
 
@@ -356,7 +362,7 @@ vim.g.slime_paste_file = "/tmp/.slime_paste"
 vim.g.slime_default_config = {socket_name="default", target_pane="slime:1.1"}
 
 local opts = { noremap=true, silent=true }
-vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<M-e>', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
 vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
 vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
 vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
@@ -385,17 +391,18 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
-local lint = require('lint')
-lint.linters_by_ft = {
-  python = {'flake8', },
-}
-vim.cmd([[
-au BufWrite <buffer> lua require('lint').try_lint()
-]])
+-- local lint = require('lint')
+-- lint.linters_by_ft = {
+--   python = {'flake8', },
+-- }
+-- vim.cmd([[
+-- au BufWrite <buffer> lua require('lint').try_lint()
+-- ]])
 
-vim.g.python3_host_prog="~/.pyenv/shims/python3.9"
+vim.g.python3_host_prog="/home/d074052/.pyenv/shims/python3"
 vim.g.coq_settings = { auto_start= 'shut-up' }
-local servers = { 'pyright', 'texlab', 'rust_analyzer', }
+-- local servers = { 'pyright', 'texlab', 'rust_analyzer', }
+local servers = { 'pyright', 'rust_analyzer', 'clangd', }
 local coq = require("coq")
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
@@ -406,6 +413,7 @@ for _, lsp in pairs(servers) do
     }
   }
 end
+
 vim.api.nvim_set_keymap(
   "n",
   "<M-g>",
